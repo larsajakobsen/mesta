@@ -1,0 +1,84 @@
+﻿/* Mobile-First Styles for MestaTable */
+
+/* Base styles for mobile (Card View) */
+.table {
+    width: 100%;
+}
+
+.table thead {
+    display: none; /* Hide table header on mobile */
+}
+
+.table tbody, .table tr, .table td {
+    display: block;
+    width: 100%;
+}
+
+.table tr {
+    margin-bottom: 1rem; /* Space between cards */
+    padding: 0.75rem;
+    background-color: #ffffff; /* Uniform background for all cards on mobile */
+    border-radius: 8px; /* Rounded corners for card effect */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for card effect */
+}
+
+.table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+}
+
+.table td::before {
+    content: attr(data-label); /* Display label from data-label attribute */
+    font-weight: bold;
+    color: #666;
+    margin-right: 10px;
+}
+
+/* Remove the bottom border on the last item in each card */
+.table td:last-child {
+    border-bottom: 0;
+}
+
+/* Desktop (Table View) - Apply styles for screens wider than 768px */
+@media (min-width: 768px) {
+    .table thead {
+        display: table-header-group; /* Show table header on desktop */
+    }
+
+    .table tbody {
+        display: table-row-group;
+    }
+
+    .table tr {
+        display: table-row;
+        margin-bottom: 0; /* Remove space between rows */
+        padding: 0;
+        background-color: transparent; /* Reset background color */
+        box-shadow: none; /* Remove shadow on desktop */
+        border-radius: 0;
+    }
+
+    .table td {
+        display: table-cell;
+        padding: 0.75rem;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Alternating colors for table rows on desktop */
+    .table tr:nth-child(odd) {
+        background-color: #f8f9fa; /* Light background for odd rows */
+    }
+
+    .table tr:nth-child(even) {
+        background-color: #e9ecef; /* Slightly darker background for even rows */
+    }
+
+    /* Remove labels in desktop mode */
+    .table td::before {
+        content: none;
+    }
+}

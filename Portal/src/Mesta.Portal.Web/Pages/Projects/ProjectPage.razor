@@ -1,0 +1,62 @@
+@page "/projects/{Id}"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@attribute [StreamRendering]
+@attribute [Authorize]
+
+@if (ProjectModel == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <h3>@ProjectModel.Name</h3>
+    <p>
+        <div>
+            <label>Status</label>
+            <b>@ProjectModel.Status</b>
+        </div>
+        <div>
+            <label>Ansvarlig</label>
+            <b>@ProjectModel.Responsible</b>
+        </div>
+    </p>
+    <div>
+        <button class="btn btn-primary" @onclick="() => currentTab = 1">Registrer timer</button>
+        <button class="btn btn-secondary" @onclick="() => currentTab = 2">Registrer endringsordre</button>
+    </div>
+    <hr />
+
+    @if (currentTab == 2)
+    {
+        <ChangeOrderComponent Project="@ProjectModel" />        
+    }
+}
+
+@using Mesta.ProjectManagement.Features.Projects
+@using Mesta.ProjectManagement.Features.Projects.Get
+@using Microsoft.AspNetCore.Authorization
+
+@inject NavigationManager NavigationManager
+@inject GetProjectFeature GetProjectsFeature;
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; }
+
+    private Project ProjectModel;
+
+    int currentTab = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await GetProjectsFeature.Execute(int.Parse(Id));
+        if (response != null)
+        {
+            ProjectModel = response.Project;
+        }
+    }
+
+}

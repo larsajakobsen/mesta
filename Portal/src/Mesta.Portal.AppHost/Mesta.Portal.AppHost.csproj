@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsAspireHost>true</IsAspireHost>
+        <UserSecretsId>d79c46ae-162b-4de8-b4a0-ecdf161769c6</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Aspire.Hosting.AppHost" Version="8.2.0" />
+        <PackageReference Include="Aspire.Hosting.Keycloak" Version="8.2.0-preview.1.24428.5" />
+        <PackageReference Include="Aspire.Hosting.SqlServer" Version="8.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Mesta.Portal.Api\Mesta.Users.Api.csproj" />
+      <ProjectReference Include="..\Mesta.Portal.Web\Mesta.Portal.Web.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,146 @@
+@page "/users"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@attribute [StreamRendering]
+@attribute [Authorize]
+@using Mesta.Portal.Web.Shared.Components.MestaTable
+@using Microsoft.AspNetCore.Authorization
+@using Mesta.Users.Api.Contracts
+@using Mesta.Users.Api.Contracts.GetUsers
+@using Mesta.Users.Api.Contracts.UpdateUser
+@inject IUserApi UserApi
+@inject NavigationManager NavigationManager
+
+<PageTitle>Brukere</PageTitle>
+
+<h1>Brukere</h1>
+<hr />
+<button class="btn btn-primary" @onclick="NavigateToNew">Ny bruker</button>
+@if (users == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+<MestaTable>
+    <HeaderContent>
+        <MestaTableHeader>Id</MestaTableHeader>
+        <MestaTableHeader>Username</MestaTableHeader>
+        <MestaTableHeader>First Name</MestaTableHeader>
+        <MestaTableHeader>Last Name</MestaTableHeader>
+        <MestaTableHeader>Email</MestaTableHeader>
+        <MestaTableHeader></MestaTableHeader>
+        <MestaTableHeader></MestaTableHeader>
+    </HeaderContent>
+
+    <ChildContent>
+        @foreach (var user in users)
+        {
+                <MestaTableRow Item="user">
+                <ChildContent>
+                    <MestaTableCell Label="Id">@user.Id</MestaTableCell>
+                    <MestaTableCell Label="Username">@user.Username</MestaTableCell>
+                    <MestaTableCell Label="First Name">@user.FirstName</MestaTableCell>
+                    <MestaTableCell Label="Last Name">@user.LastName</MestaTableCell>
+                    <MestaTableCell Label="Email">@user.Email</MestaTableCell>
+                    <MestaTableCell Label="">
+                        <button class="btn btn-primary" @onclick="() => ShowEditDialog(user)">Edit</button>
+                    </MestaTableCell>
+                    <MestaTableCell Label="Actions">
+                        <button class="btn btn-danger" @onclick="() => DeleteUser(user.Id)">Delete</button>
+                    </MestaTableCell>
+                </ChildContent>
+            </MestaTableRow>
+        }
+    </ChildContent>
+</MestaTable>
+}
+
+@if (isEditDialogVisible)
+{
+    <dialog open="@isEditDialogVisible">
+        <form>
+            <div class="mb-3">
+                <label for="inputFirstName" class="form-label">First name</label>
+                <input type="email" class="form-control" id="inputFirstName" @bind="editUser!.FirstName">
+            </div>
+            <div class="mb-3">
+                <label for="inputLastName" class="form-label">Last name</label>
+                <input type="email" class="form-control" id="inputLastName" @bind="editUser!.LastName">
+            </div>
+            <div class="mb-3">
+                <label for="inputEmail" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="inputEmail" @bind="editUser!.Email">
+            </div>
+            <a class="btn btn-primary" @onclick="UpdateUser">Save</a>
+        </form>
+    </dialog>
+}
+
+@code {
+
+    private EditUserModel? editUser;
+    private bool isEditDialogVisible => editUser != null;
+    private IList<UserListItem>? users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetUsers();
+    }
+
+    private void ShowEditDialog(UserListItem user)
+    {
+        editUser = new EditUserModel(user.Id, user.FirstName, user.LastName, user.Email);
+    }
+        
+    private void NavigateToNew() { 
+        NavigationManager.NavigateTo("new-user");
+    }
+  
+
+    private async Task UpdateUser()
+    {
+        try
+        {
+            await UserApi.UpdateUser(new UpdateUserRequest(editUser!.UserId, editUser.FirstName, editUser.LastName, editUser.Email));
+            await GetUsers();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        finally
+        {
+            editUser = null;
+        }
+    }
+
+    private async Task DeleteUser(Guid userId)
+    {
+        try
+        {
+            await UserApi.DeleteUser(userId);
+            await GetUsers();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    private async Task GetUsers()
+    {
+        try
+        {
+            var response = await UserApi.GetUsers();
+            users = response.Users;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            NavigationManager.NavigateTo("/logout");
+        }
+    }
+
+}

@@ -1,0 +1,92 @@
+@page "/new-user"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+<PageTitle>New user</PageTitle>
+
+<h1>New user</h1>
+
+@if (isBusy)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    @if (errors != null)
+    {
+        foreach (var error in errors)
+        {
+            <div class="alert @error.Item1" role="alert">
+                @error.Item2
+            </div>
+        }
+    }
+
+    <form>
+        <div class="mb-3">
+            <label for="inputUsername" class="form-label">Username</label>
+            <input type="email" class="form-control" id="inputUsername" @bind="username">
+        </div>
+        <div class="mb-3">
+            <label for="inputEmail" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="inputEmail" @bind="email">
+        </div>
+        <div class="mb-3">
+            <label for="inputFirstName" class="form-label">First name</label>
+            <input type="email" class="form-control" id="inputFirstName" @bind="firstName">
+        </div>
+        <div class="mb-3">
+            <label for="inputLastName" class="form-label">Last name</label>
+            <input type="email" class="form-control" id="inputLastName" @bind="lastName">
+        </div>
+        <a class="btn btn-primary" @onclick="CreateUser">Submit</a>
+    </form>
+}
+
+@using Mesta.Portal.Application.Features.Users.Create
+@using Refit
+
+@inject CreateUserFeature CreateUserFeature
+
+@code{
+
+    private bool isBusy { get; set; }
+    private IList<(string, string)>? errors { get; set; }
+
+    private string? username { get; set; }
+    private string? firstName { get; set; }
+    private string? lastName { get; set; }
+    private string? email { get; set; }
+
+    private async Task CreateUser()
+    {
+        errors = null;
+        isBusy = true;
+
+        var response = await CreateUserFeature.Execute(username!, firstName!, lastName!, email!);
+
+        if (!response.Success && response.Errors != null)
+        {
+            errors = response.Errors
+                .SelectMany(x => x.Value)
+                .Select(x => ("alert-danger", x)).ToList();
+        }
+
+        ClearInputs();
+
+        errors = [("alert-success", "User created. Check email to set password at http://localhost:1080")];
+
+    }
+
+    private void ClearInputs()
+    {
+        isBusy = false;
+        username = null;
+        firstName = null;
+        lastName = null;
+        email = null;
+    }
+
+}

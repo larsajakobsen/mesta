@@ -1,0 +1,9 @@
+﻿<td data-label="@Label">@ChildContent</td>
+
+@code {
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+}

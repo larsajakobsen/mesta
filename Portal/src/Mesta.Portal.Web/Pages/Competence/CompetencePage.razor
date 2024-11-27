@@ -1,0 +1,119 @@
+@page "/competencies/register"
+@page "/competencies/{id:int?}/edit"
+
+@using Mesta.Portal.Web.Shared.Components
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@attribute [StreamRendering]
+
+<div class="container">
+    <section class="form-section">
+        <div class="employee-info mb-4 p-3 bg-light border rounded">
+            <h5>Medarbeider: <strong>Per-jonny Moldestad (118648)</strong></h5>
+        </div>
+        <EditForm Model="@competence" class="shadow-sm p-4 rounded-lg bg-light border">
+            <MestaCard>
+                <div class="row mb-3">
+                    <div class="col-12 mb-3">
+                        <label for="type" class="form-label">Type</label>
+                        <InputSelect id="type" class="form-select p-3 border-light rounded" @bind-Value="competence.Type">
+                            <option>Hovedverneombud (Arbeidserfaring)</option>
+                        </InputSelect>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="description" class="form-label">Beskrivelse</label>
+                        <InputText id="description" class="form-control p-3 border-light rounded" @bind-Value="competence.Description" placeholder="Enter description" />
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="position" class="form-label">Stilling</label>
+                        <InputText id="position" class="form-control p-3 border-light rounded" @bind-Value="competence.Description" placeholder="Enter position" />
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="location" class="form-label">Sted</label>
+                        <InputText id="location" class="form-control p-3 border-light rounded" @bind-Value="competence.Description" placeholder="Enter location" />
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="start-date" class="form-label">Startdato</label>
+                        <InputDate id="start-date" class="form-control p-3 border-light rounded" @bind-Value="competence.StartDate" />
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="end-date" class="form-label">Sluttdato</label>
+                        <InputDate id="end-date" class="form-control p-3 border-light rounded" @bind-Value="competence.EndDate" />
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="attachment" class="form-label">Vedlegg</label>
+                        <InputFile id="attachment" class="form-control p-3 border-light rounded" />
+                    </div>
+                </div>
+            </MestaCard>
+            <div class="row mb-3">
+                <div class="col-6 mb-3">
+                    <MestaCard>
+                        <div class="row mb-3">
+                            <div class="col-6 mb-3">
+                                <label for="school" class="form-label">Utdanningssted (hvis relevant)</label>
+                                <InputText id="school" class="form-control p-3 border-light rounded" @bind-Value="competence.Issuer" placeholder="Enter school" />
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="line-name" class="form-label">Navn på linje (hvis relevant)</label>
+                                <InputText id="line-name" class="form-control p-3 border-light rounded" @bind-Value="competence.Program" placeholder="Enter line name" />
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="company" class="form-label">Firma (hvis relevant)</label>
+                                <InputText id="company" class="form-control p-3 border-light rounded" @bind-Value="competence.Valg" placeholder="Enter company" />
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="instructor" class="form-label">Hvem har gitt opplæringen</label>
+                                <InputText id="instructor" class="form-control p-3 border-light rounded" @bind-Value="competence.Responsible" placeholder="Enter instructor" />
+                            </div>
+                        </div>
+                    </MestaCard>
+                </div>
+
+                <div class="col-6 mb-3">
+                    <MestaCard>
+                        <div class="row mb-3">
+                            <div class="col-6 mb-3">
+                                <label for="valid-from" class="form-label">Fra dato</label>
+                                <InputDate id="valid-from" class="form-control p-3 border-light rounded" @bind-Value="competence.FromDate" />
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="valid-to" class="form-label">Til dato (hvis relevant)</label>
+                                <InputDate id="valid-to" class="form-control p-3 border-light rounded" @bind-Value="competence.ToDate" />
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-check form-switch">
+                                    <InputCheckbox id="is-valid" class="form-check-input" @bind-Value="competence.IsValid" />
+                                    <label for="is-valid" class="form-check-label">Gyldig</label>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-check form-switch">
+                                    <InputCheckbox id="send-email" class="form-check-input" @bind-Value="competence.SendEmailOnExpiring" />
+                                    <label for="send-email" class="form-check-label">Send e-post til ansvarlig ved utgåelse</label>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-check form-switch">
+                                    <InputCheckbox id="include-cv" class="form-check-input" @bind-Value="competence.IncludeInCV" />
+                                    <label for="include-cv" class="form-check-label">Inkluder i CV</label>
+                                </div>
+                            </div>
+                        </div>
+                    </MestaCard>
+                </div>
+            </div>
+
+            <MestaCard>
+                <div class="mb-4">
+                    <label for="notes" class="form-label">Notater</label>
+                    <InputTextArea id="notes" class="form-control p-3 border-light rounded" @bind-Value="competence.Notes" placeholder="Enter notes" />
+                </div>
+            </MestaCard>
+
+            <div class="d-flex justify-content-between">
+                <button type="button" @onclick="Cancel" class="btn btn-secondary btn-lg">Avbryt</button>
+                <button type="submit" @onclick="Submit" class="btn btn-primary btn-lg">Lagre</button>
+            </div>
+        </EditForm>
+    </section>
+</div>

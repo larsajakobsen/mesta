@@ -1,0 +1,88 @@
+﻿@page "/changeOrder/{ProjectId}"
+
+@using SmartComponents
+
+<h3>Endringsordre</h3>
+
+<label for="typeSelect">Select Type:</label>
+<select id="typeSelect" @bind="selectedType">
+    <option value="">-- Select --</option>
+    @foreach (var type in types)
+    {
+        <option value="@type">@type</option>
+    }
+</select>
+
+<hr />
+
+@if (!string.IsNullOrEmpty(selectedType))
+{
+    <div>
+        @if (selectedType == "Reparasjon lyktestolpe")
+        {
+            <div>
+                <h4>Reparasjon lyktestolpe</h4>
+                <label for="inputA">Input A:</label>
+                <input id="inputA" type="text" @bind="inputA" />
+                <div>
+                    <SmartTextArea @bind-Value="@text"
+                                   UserRole="@userRole"
+                                   rows="10" cols="80" />
+                </div>
+            </div>
+        }
+        else if (selectedType == "Hull i asfalt")
+        {
+            <div>
+                <h4>Hull i asfalt</h4>
+                <label for="inputB">Input B:</label>
+                <input id="inputB" type="number" @bind="inputB" />
+                <div>
+                    <SmartTextArea @bind-Value="@text"
+                                   UserRole="@userRole"
+                                   rows="10" cols="80" />
+                </div>
+            </div>
+        }
+        else if (selectedType == "Tømming av kum")
+        {
+            <div>
+                <h4>Tømming av kum</h4>
+                <label for="inputC">Input C:</label>
+                <input id="inputC" type="date" @bind="inputC" />
+
+                <div>
+                    <SmartTextArea 
+                        @bind-Value="@text" 
+                        UserRole="@userRole" 
+                        rows="10" cols="80" />
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public Mesta.ProjectManagement.Features.Projects.Project Project { get; set; }
+
+    private string selectedType;
+    private readonly List<string> types = new() { "Reparasjon lyktestolpe", "Hull i asfalt", "Tømming av kum" };
+
+    private string inputA;
+    private int inputB;
+    private DateTime inputC;
+
+    private string text;
+    private string userRole = "En norsk byggherre som skal registrere en endring i et byggeprosjekt relatert til f.eks. veibygging eller togbaneutbedring.";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Project != null)
+        {
+            userRole += $"Dette gjelder prosjektet {Project.Name} med {Project.Responsible} som ligger på denne adressen : {Project.Address}";
+        }
+    }
+}

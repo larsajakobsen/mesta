@@ -1,0 +1,20 @@
+﻿<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead class="thead-light">
+            <tr>
+                @HeaderContent
+            </tr>
+        </thead>
+        <tbody>
+            @ChildContent
+        </tbody>
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment HeaderContent { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+}

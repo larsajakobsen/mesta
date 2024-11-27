@@ -1,0 +1,42 @@
+﻿@page "/competencies"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@attribute [StreamRendering]
+
+@using Mesta.Portal.Web.Shared.Components.MestaTable
+
+<PageTitle>Kompetanse</PageTitle>
+
+<h1>Kompetanse</h1>
+<hr />
+<button class="btn btn-primary" @onclick="NavigateToRegister">Registrer</button>
+<hr />
+
+
+<MestaTable>
+    <HeaderContent>
+        <MestaTableHeader>Id</MestaTableHeader>
+        <MestaTableHeader>Beskrivelse</MestaTableHeader>
+        <MestaTableHeader>Person</MestaTableHeader>
+        <MestaTableHeader>Type</MestaTableHeader>
+        <MestaTableHeader>Status</MestaTableHeader>
+        <MestaTableHeader>Fra dato</MestaTableHeader>
+        <MestaTableHeader>Til dato</MestaTableHeader>
+        <MestaTableHeader>Ansvarlig</MestaTableHeader>
+    </HeaderContent>
+    <ChildContent>
+        @foreach (var competence in CompetenceList)
+        {
+            <MestaTableRow Item="competence">
+                <MestaTableCell Label="Id"><a href="@GetCompetenceUrl(competence.Id)">@competence.Id</a></MestaTableCell>
+                <MestaTableCell Label="Beskrivelse">@competence.Description</MestaTableCell>
+                <MestaTableCell Label="Person">@competence.Person</MestaTableCell>
+                <MestaTableCell Label="Type">@competence.Type</MestaTableCell>
+                <MestaTableCell Label="Status">@competence.Status</MestaTableCell>
+                <MestaTableCell Label="Fra dato">@competence.FromDate?.ToString("MM.dd.yyyy")</MestaTableCell>
+                <MestaTableCell Label="Til dato">@competence.ToDate?.ToString("MM.dd.yyyy")</MestaTableCell>
+                <MestaTableCell Label="Ansvarlig">@competence.Responsible</MestaTableCell>
+            </MestaTableRow>
+        }
+    </ChildContent>
+</MestaTable>
+

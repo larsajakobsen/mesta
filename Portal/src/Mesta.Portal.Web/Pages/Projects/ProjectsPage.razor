@@ -1,0 +1,63 @@
+@page "/projects"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@attribute [StreamRendering]
+@attribute [Authorize]
+
+<PageTitle>Dine prosjekter</PageTitle>
+
+<h1>Dine prosjekter</h1>
+<hr />
+@if (ProjectList == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <MestaTable>
+        <HeaderContent>
+            <MestaTableHeader>Id</MestaTableHeader>
+            <MestaTableHeader>Name</MestaTableHeader>
+        </HeaderContent>
+
+        <ChildContent>
+            @foreach (var project in ProjectList)
+            {
+                <MestaTableRow TItem="Project" Item="project">
+                    <ChildContent>
+                        <MestaTableCell Label="Id">@project.Id</MestaTableCell>
+                        <MestaTableCell Label="Name">
+                            <a href="@GetProjectUrl(project.Id)">@project.Name</a>
+                        </MestaTableCell>
+                    </ChildContent>
+                </MestaTableRow>
+            }
+        </ChildContent>
+    </MestaTable>
+}
+
+@using Mesta.Portal.Web.Shared.Components.MestaTable
+@using Mesta.ProjectManagement.Features.Projects
+@using Mesta.ProjectManagement.Features.Projects.Fetch
+@using Microsoft.AspNetCore.Authorization
+
+@inject NavigationManager NavigationManager
+@inject FetchProjectsFeature FetchProjectsFeature;
+
+@code {
+
+    private IList<Project>? ProjectList;
+
+    private string GetProjectUrl(int id) => $"/projects/{id}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await FetchProjectsFeature.Execute();
+        if (response != null)
+        {
+            ProjectList = response.Projects;
+        }
+    }
+
+}

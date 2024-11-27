@@ -1,0 +1,9 @@
+﻿
+<div class="card p-4 shadow-sm rounded-lg border-light ">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+}
