@@ -19,15 +19,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mesta.Users.Api", "src\Mest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mesta.CompetenceManagement", "Mesta.CompetenceManagement\Mesta.CompetenceManagement.csproj", "{3179D86C-4183-4D18-BCFE-A6E077B580B4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Entry", "1 - Entry", "{20984971-2D6D-44DE-BE32-05B2643B4568}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Capabilities", "2 - Capabilities", "{6F281FF7-1508-44DE-84E4-045103D6BF8D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Entry", "0 - Entry", "{20984971-2D6D-44DE-BE32-05B2643B4568}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - External APIs", "3 - External APIs", "{B61920D3-B019-4844-8F5F-BA5709CC3802}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mesta.ProjectManagement", "Mesta.ProjectManagement\Mesta.ProjectManagement.csproj", "{7B00E267-972A-47AA-A5E7-C99A794F71BE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mesta.Portal.Application", "Mesta.Portal.Application\Mesta.Portal.Application.csproj", "{BEB7B890-F4BA-4F68-A974-A2994F45A74A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mesta.Portal.Functions", "Mesta.Portal.Functions\Mesta.Portal.Functions.csproj", "{FFDB6162-746E-4724-8E9F-38AED0C9F171}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Application Logic", "1 - Application Logic", "{9BFB4DC6-4801-4BF4-910E-5A93869ED047}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mesta.Portal.Application.Tests", "Mesta.Portal.Application.Tests\Mesta.Portal.Application.Tests.csproj", "{313511EE-613E-49AC-ADFE-9D86B477FCD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +73,14 @@ Global
 		{BEB7B890-F4BA-4F68-A974-A2994F45A74A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEB7B890-F4BA-4F68-A974-A2994F45A74A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEB7B890-F4BA-4F68-A974-A2994F45A74A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFDB6162-746E-4724-8E9F-38AED0C9F171}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFDB6162-746E-4724-8E9F-38AED0C9F171}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFDB6162-746E-4724-8E9F-38AED0C9F171}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFDB6162-746E-4724-8E9F-38AED0C9F171}.Release|Any CPU.Build.0 = Release|Any CPU
+		{313511EE-613E-49AC-ADFE-9D86B477FCD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{313511EE-613E-49AC-ADFE-9D86B477FCD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{313511EE-613E-49AC-ADFE-9D86B477FCD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{313511EE-613E-49AC-ADFE-9D86B477FCD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,7 +91,9 @@ Global
 		{A76FF80A-7BA7-4832-AB4C-4FEA0D0DDF61} = {B61920D3-B019-4844-8F5F-BA5709CC3802}
 		{3179D86C-4183-4D18-BCFE-A6E077B580B4} = {6F281FF7-1508-44DE-84E4-045103D6BF8D}
 		{7B00E267-972A-47AA-A5E7-C99A794F71BE} = {6F281FF7-1508-44DE-84E4-045103D6BF8D}
-		{BEB7B890-F4BA-4F68-A974-A2994F45A74A} = {20984971-2D6D-44DE-BE32-05B2643B4568}
+		{BEB7B890-F4BA-4F68-A974-A2994F45A74A} = {9BFB4DC6-4801-4BF4-910E-5A93869ED047}
+		{FFDB6162-746E-4724-8E9F-38AED0C9F171} = {20984971-2D6D-44DE-BE32-05B2643B4568}
+		{313511EE-613E-49AC-ADFE-9D86B477FCD1} = {9BFB4DC6-4801-4BF4-910E-5A93869ED047}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82EAE441-2835-4E78-B8F1-7839DFEAB0E5}

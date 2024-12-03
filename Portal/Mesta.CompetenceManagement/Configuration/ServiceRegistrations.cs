@@ -2,6 +2,8 @@
 using Mesta.CompetenceManagement.Features.Competencies.Fetch;
 using Mesta.CompetenceManagement.Features.Competencies.Get;
 using Mesta.CompetenceManagement.Integrations.Landax;
+using Mesta.CompetenceManagement.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +13,8 @@ namespace Mesta.CompetenceManagement.Configuration
     {
         public static IServiceCollection AddMestaCompetenceManagement(this IServiceCollection services, IConfiguration configuration)
         {
-            // Register your services here
+            services.AddDbContext<CompetenceDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("CompetenceConnection")));
 
             services.Configure<LandaxConfiguration>(configuration.GetSection("Landax"));
 

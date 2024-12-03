@@ -1,6 +1,8 @@
 ﻿using Mesta.CompetenceManagement.Domain;
 using Mesta.CompetenceManagement.Domain.Interfaces;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Mesta.Portal.Application.Tests")]
 namespace Mesta.CompetenceManagement.Features.Competencies.Fetch
 {
     public interface IFetchCompetenceListFeature

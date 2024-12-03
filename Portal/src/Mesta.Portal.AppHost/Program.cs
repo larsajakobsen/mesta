@@ -1,4 +1,6 @@
+using Aspire.Hosting;
 using Microsoft.Extensions.Hosting;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
@@ -40,5 +42,8 @@ if (builder.Environment.IsDevelopment())
         .WithHttpEndpoint(1080, 1080, "web")
         .WithHttpEndpoint(1025, 1025, "mail");
 }
+
+builder.AddProject<Projects.Mesta_Portal_Functions>("mesta-portal-functions")
+    .WithExternalHttpEndpoints();
 
 builder.Build().Run();
