@@ -10,17 +10,15 @@ namespace Mesta.CompetenceManagement.Persistence
     {
         public DbSet<Competence> Competencies { get; set; }
 
+        public CompetenceDbContext(DbContextOptions<CompetenceDbContext> options) : base(options) { }
 
-        private readonly CompetenceManagementSettings _settings;
-
-        public CompetenceDbContext(IOptions<CompetenceManagementSettings> options)
-        {
-            _settings = options.Value;
-        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_settings.DatabaseConnectionString);
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Server=LARSJOBB\\SQLEXPRESS;Database=Mesta.Competence;Trusted_Connection=True;TrustServerCertificate=True");
+            }
         }
     }
 }
