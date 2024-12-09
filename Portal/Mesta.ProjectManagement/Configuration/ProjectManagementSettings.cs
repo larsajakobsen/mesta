@@ -1,6 +1,6 @@
 ﻿namespace Mesta.CompetenceManagement.Configuration
 {
-    internal class CompetenceManagementSettings
+    internal class ProjectManagementSettings
     {
         public string TenantId { get; set; }
         public string BaseAddress { get; set; }

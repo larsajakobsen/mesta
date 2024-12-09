@@ -1,8 +1,5 @@
-﻿using Mesta.CompetenceManagement.Configuration;
-using Mesta.CompetenceManagement.Domain;
+﻿using Mesta.CompetenceManagement.Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
 namespace Mesta.CompetenceManagement.Persistence
 {
@@ -10,7 +7,7 @@ namespace Mesta.CompetenceManagement.Persistence
     {
         public DbSet<Competence> Competencies { get; set; }
 
-        public CompetenceDbContext(DbContextOptions<CompetenceDbContext> options) : base(options) { }
+       public CompetenceDbContext(DbContextOptions<CompetenceDbContext> options) : base(options) { }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

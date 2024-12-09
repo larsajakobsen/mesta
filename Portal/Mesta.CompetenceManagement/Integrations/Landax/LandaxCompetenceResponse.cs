@@ -24,7 +24,7 @@ namespace Mesta.CompetenceManagement.Integrations.Landax
         public int? EquipmentId { get; set; }
         public int? ResponsibleCoworkerId { get; set; }
         public object SupplierId { get; set; }
-        public DateTime CreatedDateTime { get; set; }
+        public DateTime? CreatedDateTime { get; set; }
         public string FromDate { get; set; }
         public string ToDate { get; set; }
         public string StartDate { get; set; }
@@ -55,7 +55,7 @@ namespace Mesta.CompetenceManagement.Integrations.Landax
         public string Tag4 { get; set; }
         public string Tag5 { get; set; }
         public object ExternalId { get; set; }
-        public DateTime ChangedDateTime { get; set; }
+        public DateTime? ChangedDateTime { get; set; }
         public object[] TagTypeIds { get; set; }
     }
 

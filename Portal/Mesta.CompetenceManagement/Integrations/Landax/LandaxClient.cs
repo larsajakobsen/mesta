@@ -13,7 +13,6 @@ internal class LandaxClient : ICompetenceClient
 
     public LandaxClient(IOptions<LandaxConfiguration> options) {
         _configuration = options.Value;
-        SetupClient();
     }
 
     private void SetupClient()
@@ -23,17 +22,19 @@ internal class LandaxClient : ICompetenceClient
             "Basic", Convert.ToBase64String(byteArray));
     }
 
-    public async Task<List<Competence>> FetchCompetencies()
+    public async Task<List<Competence>> FetchCompetencies(int skip = 0)
     {
-        var response = await _httpClient.GetFromJsonAsync<LandaxCompetenceResponse>("https://mesta.landax.no/api/v28/Competencies");
+        SetupClient();
 
-        var list = response.value.Select(c => MapLandaxCompetenceToDomain(c));
+        var response = await _httpClient.GetFromJsonAsync<LandaxCompetenceResponse>($"https://mesta.landax.no/api/v28/Competencies?skip={skip}");
 
-        return list.ToList();
+        return response.value.Select(c => MapLandaxCompetenceToDomain(c)).ToList();
     }
 
     public async Task<Competence> GetCompetence(int id)
     {
+        SetupClient();
+
         var response = await _httpClient.GetFromJsonAsync<LandaxCompetenceResponse>($"https://mesta.landax.no/api/v28/Competency?filter=Id={id}");
 
         var landaxCompetence = response.value.Single(c => c.Id == id);
@@ -49,6 +50,7 @@ internal class LandaxClient : ICompetenceClient
         return new Competence()
         {
             Id = landaxCompetence.Id,
+            EmployeeId = landaxCompetence.CoworkerId,
             Description = landaxCompetence.Description,
             FromDate = fromDate,
             ToDate = toDate,

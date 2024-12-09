@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mesta.CompetenceManagement.Migrations
 {
     [DbContext(typeof(CompetenceDbContext))]
-    [Migration("20241205084937_AddCompetence")]
+    [Migration("20241208162640_AddCompetence")]
     partial class AddCompetence
     {
         /// <inheritdoc />
@@ -28,10 +28,7 @@ namespace Mesta.CompetenceManagement.Migrations
             modelBuilder.Entity("Mesta.CompetenceManagement.Domain.Competence", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -57,12 +54,10 @@ namespace Mesta.CompetenceManagement.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Person")
-                        .IsRequired()
+                    b.Property<string>("PersonName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Place")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Program")

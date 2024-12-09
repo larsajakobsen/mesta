@@ -1,5 +1,7 @@
 ﻿using Mesta.CompetenceManagement.Domain.Interfaces;
 using Mesta.CompetenceManagement.Domain;
+using Mesta.CompetenceManagement.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Mesta.CompetenceManagement.Features.Competencies.Get
 {
@@ -10,16 +12,16 @@ namespace Mesta.CompetenceManagement.Features.Competencies.Get
 
     internal class GetCompetenceFeature : IGetCompetenceFeature
     {
-        private readonly ICompetenceClient _competenceClient;
+        private readonly CompetenceDbContext _dbContext;
 
-        public GetCompetenceFeature(ICompetenceClient competenceClient)
+        public GetCompetenceFeature(CompetenceDbContext dbContext)
         {
-            _competenceClient = competenceClient;
+            _dbContext = dbContext;
         }
 
         public async Task<Competence> Execute(int id)
         {
-            return await _competenceClient.GetCompetence(id);
+            return await _dbContext.Competencies.SingleAsync(c => c.Id == id);
         }
     }
 }

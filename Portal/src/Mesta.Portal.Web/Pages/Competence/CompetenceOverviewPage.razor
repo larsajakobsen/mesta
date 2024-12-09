@@ -29,7 +29,7 @@
             <MestaTableRow Item="competence">
                 <MestaTableCell Label="Id"><a href="@GetCompetenceUrl(competence.Id)">@competence.Id</a></MestaTableCell>
                 <MestaTableCell Label="Beskrivelse">@competence.Description</MestaTableCell>
-                <MestaTableCell Label="Person">@competence.Person</MestaTableCell>
+                <MestaTableCell Label="Person">@competence.PersonName</MestaTableCell>
                 <MestaTableCell Label="Type">@competence.Type</MestaTableCell>
                 <MestaTableCell Label="Status">@competence.Status</MestaTableCell>
                 <MestaTableCell Label="Fra dato">@competence.FromDate?.ToString("MM.dd.yyyy")</MestaTableCell>

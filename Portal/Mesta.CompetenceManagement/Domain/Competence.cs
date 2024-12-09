@@ -1,17 +1,27 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Mesta.CompetenceManagement.Domain
 {
     public class Competence
     {
+        public Competence()
+        {
+            Status = string.Empty;
+            Type = string.Empty;
+        }
+
+        [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
-        public string? Valg { get; set; } 
-        public string Person { get; set; }
+        public int? EmployeeId { get; set; }
+        public string? PersonName { get; set; }
         public int? TypeId { get; set; }
         public string Type { get; set; }
         public string Status { get; set; }
         public string? Description { get; set; } 
-        public string Place { get; set; }
+        public string? Place { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; } 
         public DateTime? FromDate { get; set; }

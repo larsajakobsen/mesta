@@ -1,5 +1,4 @@
-using System;
-using Mesta.Portal.Application.Features.Competence.Sync;
+using Mesta.CompetenceManagement.Features.Competencies.Sync;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
@@ -8,23 +7,18 @@ namespace Mesta.Portal.Functions
     public class SyncCompetence
     {
         private readonly ILogger _logger;
-        private readonly SyncCompetenceFeature _syncCompetence;
+        private readonly ISyncCompetenceFeature _syncCompetence;
 
-        public SyncCompetence(ILoggerFactory loggerFactory, SyncCompetenceFeature syncCompetenceFeature)
+        public SyncCompetence(ILoggerFactory loggerFactory, ISyncCompetenceFeature syncCompetenceFeature)
         {
             _logger = loggerFactory.CreateLogger<SyncCompetence>();
             _syncCompetence = syncCompetenceFeature;
         }
 
         [Function("SyncCompetence")]
-        public async Task Run([TimerTrigger("*/30 * * * * *", RunOnStartup = true)] TimerInfo myTimer)
+        public async Task Run([TimerTrigger("* */4 * * * *", RunOnStartup = true)] TimerInfo myTimer)
         {
-            _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
-            
-            if (myTimer.ScheduleStatus is not null)
-            {
-                _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
-            }
+            _logger.LogInformation($"SyncCompetence Timer trigger function executed at: {DateTime.Now}");
 
             await _syncCompetence.Execute();
         }

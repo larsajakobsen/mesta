@@ -15,15 +15,14 @@ namespace Mesta.CompetenceManagement.Migrations
                 name: "Competencies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Valg = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Person = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PersonName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TypeId = table.Column<int>(type: "int", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Place = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     FromDate = table.Column<DateTime>(type: "datetime2", nullable: true),

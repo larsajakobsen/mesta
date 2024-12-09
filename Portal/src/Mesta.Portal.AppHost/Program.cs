@@ -11,6 +11,8 @@ var sqlserver = builder
     .WithDataVolume()
     .WithHttpEndpoint(1433, 1433);
 
+var competenceDb = sqlserver.AddDatabase("CompetenceDatabase");
+
 // keycloak
 var keycloakAdmin = builder.AddParameter("KeycloakAdmin", secret: true);
 var keycloakPassword = builder.AddParameter("KeycloakPassword", secret: true);
@@ -33,7 +35,8 @@ var apiService = builder
 builder.AddProject<Projects.Mesta_Portal_Web>("webclient")
     .WithExternalHttpEndpoints()
     .WithReference(keycloak)
-    .WithReference(apiService);
+    .WithReference(apiService)
+    .WithReference(competenceDb);
 
 // maildev
 if (builder.Environment.IsDevelopment())

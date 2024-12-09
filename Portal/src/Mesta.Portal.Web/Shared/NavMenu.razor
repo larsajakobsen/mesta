@@ -1,16 +1,23 @@
-﻿<div class="top-row ps-3 navbar navbar-white">
+﻿
+<div class="top-row ps-3 navbar navbar-white">
     <div class="container-fluid">
         <a class="navbar-brand" href=""><img src="img/mesta-logo.png" height="35px" /></a>
     </div>
 </div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler"/>
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Hjem
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="persons">
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Ansatte
             </NavLink>
         </div>
 
@@ -26,10 +33,51 @@
             </NavLink>
         </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="users">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Brukere
-            </NavLink>
-        </div>
+        @if (isUserLoggedIn)
+        {
+            @if (isUEUser || isMestaUser)
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="projects">
+                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Prosjekter
+                    </NavLink>
+                </div>
+            }
+
+            @if (isMestaUser)
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="users">
+                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Brukere
+                    </NavLink>
+                </div>
+            }
+        }
     </nav>
 </div>
+
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@code {
+    private bool isUserLoggedIn;
+    private bool isUEUser;
+    private bool isMestaUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        isUserLoggedIn = authState.User.Identity != null && authState.User.Identity.IsAuthenticated;
+
+        var roleClaims = authState.User.Claims.Where(c => c.Type == "client_roles");
+        foreach (var claim in roleClaims)
+        {
+            if (claim.Value == "ue-user")
+                isUEUser = true;
+
+            if (claim.Value == "mesta-user")
+                isMestaUser = true;
+        }
+    }
+
+}

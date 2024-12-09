@@ -1,0 +1,67 @@
+@page "/persons"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@attribute [StreamRendering]
+@attribute [Authorize]
+
+<PageTitle>Ansatte</PageTitle>
+
+<h1>Ansatte</h1>
+<hr />
+@if (PersonList == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <MestaTable>
+        <HeaderContent>
+            <MestaTableHeader>Navn</MestaTableHeader>
+            <MestaTableHeader>Fødselsdato</MestaTableHeader>
+            <MestaTableHeader>Epost</MestaTableHeader>
+            <MestaTableHeader>Mobil</MestaTableHeader>
+        </HeaderContent>
+
+        <ChildContent>
+            @foreach (var person in PersonList)
+            {
+                <MestaTableRow TItem="Person" Item="person">
+                    <ChildContent>
+                        <MestaTableCell Label="Name">
+                            <a href="@GetPersonUrl(person.Id)">@person.FirstName @person.LastName</a>
+                        </MestaTableCell>
+                        <MestaTableCell Label="DateOfBirth">@person.DateOfBirth</MestaTableCell>
+                        <MestaTableCell Label="PersonalEmail">@person.PersonalEmail</MestaTableCell>
+                        <MestaTableCell Label="PersonalMobilePhone">@person.PersonalMobilePhone</MestaTableCell>
+                    </ChildContent>
+                </MestaTableRow>
+            }
+        </ChildContent>
+    </MestaTable>
+}
+
+@using Mesta.Portal.Web.Shared.Components.MestaTable
+@using Microsoft.AspNetCore.Authorization
+@using Mesta.CompetenceManagement.Features.Persons.Fetch
+@using Mesta.CompetenceManagement.Domain
+
+@inject NavigationManager NavigationManager
+@inject IFetchPersonsFeature FetchPersonsFeature;
+
+@code {
+
+    private IList<Person>? PersonList;
+
+    private string GetPersonUrl(Guid id) => $"/persons/{id}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await FetchPersonsFeature.Execute();
+        if (response != null)
+        {
+            PersonList = response.ToList();
+        }
+    }
+
+}

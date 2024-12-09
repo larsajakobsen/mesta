@@ -1,5 +1,6 @@
 ﻿using Mesta.CompetenceManagement.Domain;
-using Mesta.CompetenceManagement.Domain.Interfaces;
+using Mesta.CompetenceManagement.Persistence;
+using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Mesta.Portal.Application.Tests")]
@@ -12,16 +13,17 @@ namespace Mesta.CompetenceManagement.Features.Competencies.Fetch
 
     internal class FetchCompetenceListFeature : IFetchCompetenceListFeature
     {
-        private readonly ICompetenceClient _competenceClient;
+        private readonly CompetenceDbContext _dbContext;
 
-        public FetchCompetenceListFeature(ICompetenceClient competenceClient)
+        public FetchCompetenceListFeature(
+            CompetenceDbContext dbContext)
         {
-            _competenceClient = competenceClient;
+            _dbContext = dbContext;
         }
 
         public async Task<List<Competence>> Execute()
         {
-            return await _competenceClient.FetchCompetencies();
+            return await _dbContext.Competencies.ToListAsync();
         }
     }
 }

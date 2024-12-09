@@ -3,7 +3,6 @@ using Mesta.CompetenceManagement.Configuration;
 using Mesta.ProjectManagement.Configuration;
 using Mesta.Portal.Application.Features.Users.Create;
 using Microsoft.Extensions.Configuration;
-using Mesta.Portal.Application.Features.Competence.Sync;
 
 namespace Mesta.Portal.Application.Configuration
 {
@@ -14,10 +13,11 @@ namespace Mesta.Portal.Application.Configuration
             // Register your services here
 
             services.AddMestaCompetenceManagement(configuration);
-            services.AddMestaProjectManagement();
+            services.AddMestaProjectManagement(configuration);
 
             services.AddScoped<CreateUserFeature>();
-            services.AddScoped<SyncCompetenceFeature>();
+
+            services.BuildServiceProvider();
 
             return services;
         }
