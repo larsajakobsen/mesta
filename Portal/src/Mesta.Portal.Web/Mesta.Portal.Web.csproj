@@ -27,6 +27,9 @@
     <Content Update="Pages\Competence\CompetencePage.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
+    <Content Update="Pages\Projects\RegisterHoursComponent.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

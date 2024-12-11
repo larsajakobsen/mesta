@@ -16,11 +16,11 @@ namespace Mesta.Portal.Functions
         }
 
         [Function("SyncCompetence")]
-        public async Task Run([TimerTrigger("* */4 * * * *", RunOnStartup = true)] TimerInfo myTimer)
+        public async Task Run([TimerTrigger("* */4 * * * *")] TimerInfo myTimer)
         {
             _logger.LogInformation($"SyncCompetence Timer trigger function executed at: {DateTime.Now}");
 
-            await _syncCompetence.Execute();
+            //await _syncCompetence.Execute();
         }
     }
 }

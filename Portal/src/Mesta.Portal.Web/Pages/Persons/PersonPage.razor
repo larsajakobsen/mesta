@@ -1,9 +1,9 @@
-@page "/projects/{Id}"
+@page "/persons/{Id}"
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @attribute [StreamRendering]
 @attribute [Authorize]
 
-@if (ProjectModel == null)
+@if (Model == null)
 {
     <p>
         <em>Loading...</em>
@@ -11,15 +11,15 @@
 }
 else
 {
-    <h3>@ProjectModel.Name</h3>
+    <h3>@Model.FirstName - @Model.LastName</h3>
     <p>
         <div>
-            <label>Status</label>
-            <b>@ProjectModel.Status</b>
+            <label>DateOfBirth</label>
+            <b>@Model.DateOfBirth</b>
         </div>
         <div>
-            <label>Ansvarlig</label>
-            <b>@ProjectModel.Responsible</b>
+            <label>PersonalEmail</label>
+            <b>@Model.Email</b>
         </div>
     </p>
     <div>
@@ -28,35 +28,27 @@ else
     </div>
     <hr />
 
-    @if (currentTab == 2)
-    {
-        <ChangeOrderComponent Project="@ProjectModel" />        
-    }
 }
 
+@using Mesta.CompetenceManagement.Domain
+@using Mesta.ProjectManagement.Domain
 @using Mesta.ProjectManagement.Features.Projects
 @using Mesta.ProjectManagement.Features.Projects.Get
 @using Microsoft.AspNetCore.Authorization
 
 @inject NavigationManager NavigationManager
-@inject GetProjectFeature GetProjectsFeature;
 
 @code {
 
     [Parameter]
     public string Id { get; set; }
 
-    private Project ProjectModel;
+    private Person Model;
 
     int currentTab = 0;
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await GetProjectsFeature.Execute(int.Parse(Id));
-        if (response != null)
-        {
-            ProjectModel = response.Project;
-        }
     }
 
 }

@@ -1,7 +1,14 @@
 ﻿
 <div class="top-row ps-3 navbar navbar-white">
     <div class="container-fluid">
-        <a class="navbar-brand" href=""><img src="img/mesta-logo.png" height="35px" /></a>
+        @if (isUEUser)
+        {
+            <a class="navbar-brand" href=""><img src="img/mesta-logo-ue.png" height="35px" /></a>
+        }
+        else
+        {
+            <a class="navbar-brand" href=""><img src="img/mesta-logo.png" height="35px" /></a>            
+        }
     </div>
 </div>
 
@@ -15,28 +22,16 @@
             </NavLink>
         </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="persons">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Ansatte
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="competencies">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Kompetanse
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="projects">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Prosjekter
-            </NavLink>
-        </div>
-
         @if (isUserLoggedIn)
         {
             @if (isUEUser || isMestaUser)
             {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="competencies">
+                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Kompetanse
+                    </NavLink>
+                </div>
+
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="projects">
                         <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Prosjekter
@@ -46,6 +41,12 @@
 
             @if (isMestaUser)
             {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="persons">
+                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Ansatte
+                    </NavLink>
+                </div>
+
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="users">
                         <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Brukere

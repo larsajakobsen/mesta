@@ -23,21 +23,33 @@ namespace Mesta.ProjectManagement.Integrations.Mdc.Projects
         {
             await RefreshToken();
 
-            var response2 = await _httpClient.GetStringAsync($"Projects");
-            var response = await _httpClient.GetFromJsonAsync<ProjectDto[]>($"Projects/");
+            var response = await _httpClient.GetFromJsonAsync<ProjectDto[]>($"Projects");
 
-            var list = new List<Project>();
+            var list = response.Select(p => MapToDomainProject(p));
 
-            return list;
+            return list.ToList();
         }
 
-        public async Task<Project> GetProject(int id)
+        private static Project MapToDomainProject(ProjectDto p)
+        {
+            return new Project()
+            {
+                Id = p.Id,
+                Description = p.Description,
+                MainProject = p.MainProject,
+                ProjectNumber = p.ProjectNumber,
+                ProjectType = p.ProjectType,
+                Status = p.Status,
+            };
+        }
+
+        public async Task<Project> GetProject(Guid id)
         {
             await RefreshToken();
 
             var response = await _httpClient.GetFromJsonAsync<ProjectDto>($"Projects/{id}");
 
-            return await Task.FromResult(new Project());
+            return MapToDomainProject(response);
         }
 
         private async Task RefreshToken()

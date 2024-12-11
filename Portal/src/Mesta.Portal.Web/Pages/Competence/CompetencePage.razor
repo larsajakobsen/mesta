@@ -2,8 +2,11 @@
 @page "/competencies/{id:int?}/edit"
 
 @using Mesta.Portal.Web.Shared.Components
+@using Microsoft.AspNetCore.Authorization
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @attribute [StreamRendering]
+@attribute [Authorize]
+
 
 <div class="container">
     <section class="form-section">

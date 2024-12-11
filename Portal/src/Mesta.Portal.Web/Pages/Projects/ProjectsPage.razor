@@ -17,8 +17,8 @@ else
 {
     <MestaTable>
         <HeaderContent>
-            <MestaTableHeader>Id</MestaTableHeader>
-            <MestaTableHeader>Name</MestaTableHeader>
+            <MestaTableHeader>Nr.</MestaTableHeader>
+            <MestaTableHeader>Description</MestaTableHeader>
         </HeaderContent>
 
         <ChildContent>
@@ -26,9 +26,9 @@ else
             {
                 <MestaTableRow TItem="Project" Item="project">
                     <ChildContent>
-                        <MestaTableCell Label="Id">@project.Id</MestaTableCell>
-                        <MestaTableCell Label="Name">
-                            <a href="@GetProjectUrl(project.Id)">@project.Name</a>
+                        <MestaTableCell Label="ProjectNumber">@project.ProjectNumber</MestaTableCell>
+                        <MestaTableCell Label="Description">
+                            <a href="@GetProjectUrl(project.Id)">@project.Description</a>
                         </MestaTableCell>
                     </ChildContent>
                 </MestaTableRow>
@@ -38,6 +38,7 @@ else
 }
 
 @using Mesta.Portal.Web.Shared.Components.MestaTable
+@using Mesta.ProjectManagement.Domain
 @using Mesta.ProjectManagement.Features.Projects
 @using Mesta.ProjectManagement.Features.Projects.Fetch
 @using Microsoft.AspNetCore.Authorization
@@ -49,7 +50,7 @@ else
 
     private IList<Project>? ProjectList;
 
-    private string GetProjectUrl(int id) => $"/projects/{id}";
+    private string GetProjectUrl(Guid id) => $"/projects/{id}";
 
     protected override async Task OnInitializedAsync()
     {

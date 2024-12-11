@@ -3,7 +3,6 @@ using Mesta.CompetenceManagement.Domain;
 using Mesta.CompetenceManagement.Domain.Interfaces;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
-using Microsoft.IdentityModel.Tokens;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -23,17 +22,10 @@ namespace Mesta.CompetenceManagement.Integrations.Mdc.Persons
         {
             await GetToken();
 
+            //var respons2e = await _httpClient.GetStringAsync($"Persons");
             var response = await _httpClient.GetFromJsonAsync<PersonDto[]>($"Persons");
 
-            var list = response.Select(x => new Person()
-            {
-                Id = x.Id,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                DateOfBirth = x.DateOfBirth,
-                PersonalEmail = x.PersonalEmail,
-                PersonalMobilePhone = x.PersonalMobilePhone,
-            });
+            var list = response.Select(x => MapToDomainPerson(x));
 
             return list;
         }
@@ -44,7 +36,20 @@ namespace Mesta.CompetenceManagement.Integrations.Mdc.Persons
 
             var response = await _httpClient.GetFromJsonAsync<PersonDto>($"Persons/{id}");
 
-            return await Task.FromResult(new Person());
+            return MapToDomainPerson(response);
+        }
+
+        private static Person MapToDomainPerson(PersonDto x)
+        {
+            return new Person()
+            {
+                Id = x.Id,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                DateOfBirth = x.DateOfBirth,
+                Email = x.Employment.WorkEmail,
+                MobilePhone = x.Employment.WorkMobilePhone,
+            };
         }
 
         private async Task GetToken()

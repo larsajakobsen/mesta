@@ -1,11 +1,11 @@
 ﻿
 .card {
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    box-shadow: 0 32px 32px rgba(0, 0, 0, 1);
     border: none;
-    margin-bottom: 3rem;
-    margin-top: 3rem;
+    margin-bottom: 5rem;
+    margin-top: 5rem;
 }
 
 @media (min-width: 768px) 

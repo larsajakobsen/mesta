@@ -8,7 +8,7 @@ namespace Mesta.CompetenceManagement.Features.Competencies.Fetch
 {
     public interface IFetchCompetenceListFeature
     {
-        Task<List<Competence>> Execute();
+        Task<IList<Competence>> Execute(int take);
     }
 
     internal class FetchCompetenceListFeature : IFetchCompetenceListFeature
@@ -21,9 +21,12 @@ namespace Mesta.CompetenceManagement.Features.Competencies.Fetch
             _dbContext = dbContext;
         }
 
-        public async Task<List<Competence>> Execute()
+        public async Task<IList<Competence>> Execute(int take)
         {
-            return await _dbContext.Competencies.ToListAsync();
+            return await _dbContext.Competencies
+                .OrderByDescending(c => c.Id)
+                .Take(take)
+                .ToListAsync();
         }
     }
 }

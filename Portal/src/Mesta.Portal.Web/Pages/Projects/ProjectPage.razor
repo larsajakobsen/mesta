@@ -11,29 +11,38 @@
 }
 else
 {
-    <h3>@ProjectModel.Name</h3>
+    <h3>@ProjectModel.ProjectNumber - @ProjectModel.Description</h3>
     <p>
+        <div>
+            <label>Type</label>
+            <b>@ProjectModel.ProjectType</b>
+        </div>
         <div>
             <label>Status</label>
             <b>@ProjectModel.Status</b>
         </div>
         <div>
             <label>Ansvarlig</label>
-            <b>@ProjectModel.Responsible</b>
+            <b>@ProjectModel.Description</b>
         </div>
     </p>
     <div>
         <button class="btn btn-primary" @onclick="() => currentTab = 1">Registrer timer</button>
-        <button class="btn btn-secondary" @onclick="() => currentTab = 2">Registrer endringsordre</button>
+        <button class="btn btn-secondary" @onclick="() => currentTab = 2">Registrer avvik</button>
     </div>
     <hr />
 
+    @if (currentTab == 1)
+    {
+        <RegisterHoursComponent Project="@ProjectModel" />
+    }
     @if (currentTab == 2)
     {
-        <ChangeOrderComponent Project="@ProjectModel" />        
+        <ChangeOrderComponent Project="@ProjectModel" />
     }
 }
 
+@using Mesta.ProjectManagement.Domain
 @using Mesta.ProjectManagement.Features.Projects
 @using Mesta.ProjectManagement.Features.Projects.Get
 @using Microsoft.AspNetCore.Authorization
@@ -52,10 +61,10 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await GetProjectsFeature.Execute(int.Parse(Id));
+        var response = await GetProjectsFeature.Execute(new Guid(Id));
         if (response != null)
         {
-            ProjectModel = response.Project;
+            ProjectModel = response;
         }
     }
 

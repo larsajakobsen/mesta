@@ -1,4 +1,4 @@
-﻿using Mesta.ProjectManagement.Features.Projects;
+﻿using Mesta.ProjectManagement.Domain;
 
 namespace Mesta.ProjectManagement.Features.Projects.Fetch
 {

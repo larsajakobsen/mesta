@@ -2,7 +2,11 @@
 {
     public class Project
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public Guid Id { get; set; }
+        public int ProjectNumber { get; set; }
+        public string? Description { get; set; }
+        public string? ProjectType { get; set; }
+        public string? Status { get; set; }
+        public Guid MainProject { get; set; }
     }
 }

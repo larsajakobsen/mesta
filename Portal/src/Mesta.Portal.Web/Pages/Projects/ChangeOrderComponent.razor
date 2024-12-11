@@ -1,88 +1,147 @@
-﻿@page "/changeOrder/{ProjectId}"
+﻿<h3>Avviksskjema</h3>
 
-@using SmartComponents
+<EditForm Model="deviationModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-<h3>Endringsordre</h3>
+    <!-- Section 1 -->
+    <MestaCard>
+        <fieldset>
+            <h5>Trinn 1: Utfylling</h5>
+            <div class="form-group">
+                <label for="title">Overskrift *</label>
+                <input id="title" type="text" class="form-control" @bind="deviationModel.Title" />
+                <ValidationMessage For="@(() => deviationModel.Title)" />
+            </div>
 
-<label for="typeSelect">Select Type:</label>
-<select id="typeSelect" @bind="selectedType">
-    <option value="">-- Select --</option>
-    @foreach (var type in types)
-    {
-        <option value="@type">@type</option>
-    }
-</select>
+            <div class="form-group">
+                <label for="incident">Hendelse *</label>
+                <div>
+                    <SmartTextArea id="incident"
+                                   @bind-Value="deviationModel.Incident"
+                                   UserRole="@userRole"
+                                   rows="5" style="width: 100%" />
+                    <ValidationMessage For="@(() => deviationModel.Incident)" />
+                </div>
+            </div>
 
-<hr />
+            <div class="form-group">
+                <label for="immediateAction">Strakstiltak *</label>
+                <div>
+                    <SmartTextArea id="immediateAction"
+                                   @bind-Value="deviationModel.ImmediateAction"
+                                   UserRole="@userRole"
+                                   rows="5" style="width: 100%" />
+                </div>
+                <ValidationMessage For="@(() => deviationModel.ImmediateAction)" />
+            </div>
+        </fieldset>
+    </MestaCard>
 
-@if (!string.IsNullOrEmpty(selectedType))
+    <MestaCard>
+        <!-- Section 2 -->
+        <fieldset>
+            <h5>Trinn 2: Behandling (Utføres av ansvarlig for behandling av avviket)</h5>
+
+            <div class="form-group">
+                <label for="causeAnalysis">Årsaksanalyse – Utfyllende tekst</label>
+                <div>
+                    <SmartTextArea id="causeAnalysis"
+                                   @bind-Value="deviationModel.CauseAnalysis"
+                                   UserRole="@userRole"
+                                   rows="5" style="width: 100%" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="correctiveActions">Beskriv hvilke korrigerende tiltak som er bestemt</label>
+                <div>
+                    <SmartTextArea id="correctiveActions"
+                                   @bind-Value="deviationModel.CorrectiveActions"
+                                   UserRole="@userRole"
+                                   rows="5" style="width: 100%" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="completionDate">Gjennomføres innen *</label>
+                <input id="completionDate" type="datetime-local" class="form-control" @bind-value="deviationModel.CompletionDate" />
+                <ValidationMessage For="@(() => deviationModel.CompletionDate)" />
+            </div>
+        </fieldset>
+
+    </MestaCard>
+    <button type="submit" class="btn btn-primary">Send inn</button>
+</EditForm>
+
+@if (successMessage != null)
 {
-    <div>
-        @if (selectedType == "Reparasjon lyktestolpe")
-        {
-            <div>
-                <h4>Reparasjon lyktestolpe</h4>
-                <label for="inputA">Input A:</label>
-                <input id="inputA" type="text" @bind="inputA" />
-                <div>
-                    <SmartTextArea @bind-Value="@text"
-                                   UserRole="@userRole"
-                                   rows="10" cols="80" />
-                </div>
-            </div>
-        }
-        else if (selectedType == "Hull i asfalt")
-        {
-            <div>
-                <h4>Hull i asfalt</h4>
-                <label for="inputB">Input B:</label>
-                <input id="inputB" type="number" @bind="inputB" />
-                <div>
-                    <SmartTextArea @bind-Value="@text"
-                                   UserRole="@userRole"
-                                   rows="10" cols="80" />
-                </div>
-            </div>
-        }
-        else if (selectedType == "Tømming av kum")
-        {
-            <div>
-                <h4>Tømming av kum</h4>
-                <label for="inputC">Input C:</label>
-                <input id="inputC" type="date" @bind="inputC" />
-
-                <div>
-                    <SmartTextArea 
-                        @bind-Value="@text" 
-                        UserRole="@userRole" 
-                        rows="10" cols="80" />
-                </div>
-            </div>
-        }
-    </div>
+    <div class="alert alert-success mt-3">@successMessage</div>
 }
 
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger mt-3">@errorMessage</div>
+}
+
+@using System.ComponentModel.DataAnnotations
+@using Mesta.Portal.Web.Shared.Components
+@using Mesta.ProjectManagement.Domain
+@using SmartComponents
+
 @code {
+    private DeviationModel deviationModel = new DeviationModel();
+    private string? successMessage;
+    private string? errorMessage;
 
-    [Parameter]
-    public Mesta.ProjectManagement.Features.Projects.Project Project { get; set; }
-
-    private string selectedType;
-    private readonly List<string> types = new() { "Reparasjon lyktestolpe", "Hull i asfalt", "Tømming av kum" };
-
-    private string inputA;
-    private int inputB;
-    private DateTime inputC;
-
-    private string text;
     private string userRole = "En norsk byggherre som skal registrere en endring i et byggeprosjekt relatert til f.eks. veibygging eller togbaneutbedring.";
 
+    [Parameter]
+    public Project Project { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         if (Project != null)
         {
-            userRole += $"Dette gjelder prosjektet {Project.Name} med {Project.Responsible} som ligger på denne adressen : {Project.Address}";
+            userRole += $"Dette gjelder prosjektet {Project.Description} med type {Project.ProjectType} med status: {Project.Status}";
         }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            // Replace this with actual logic to save or process the form
+            await Task.Delay(500);
+
+            successMessage = "Avviksskjema er sendt inn!";
+            errorMessage = null;
+
+            // Reset form
+            deviationModel = new DeviationModel();
+        }
+        catch (Exception ex)
+        {
+            successMessage = null;
+            errorMessage = $"En feil oppstod: {ex.Message}";
+        }
+    }
+
+    public class DeviationModel
+    {
+        [Required(ErrorMessage = "Overskrift er påkrevd.")]
+        public string? Title { get; set; }
+
+        [Required(ErrorMessage = "Hendelse er påkrevd.")]
+        public string? Incident { get; set; }
+
+        [Required(ErrorMessage = "Strakstiltak er påkrevd.")]
+        public string? ImmediateAction { get; set; }
+
+        public string? CauseAnalysis { get; set; }
+        public string? CorrectiveActions { get; set; }
+
+        [Required(ErrorMessage = "Gjennomføringsdato er påkrevd.")]
+        public DateTime? CompletionDate { get; set; }
     }
 }

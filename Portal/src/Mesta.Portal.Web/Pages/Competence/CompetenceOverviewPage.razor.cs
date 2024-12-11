@@ -11,7 +11,7 @@ namespace Mesta.Portal.Web.Pages.Competence
         [Inject]
         protected NavigationManager NavigationManager { get; set; } = null!;
 
-        public List<Mesta.CompetenceManagement.Domain.Competence> CompetenceList = [];
+        public IList<Mesta.CompetenceManagement.Domain.Competence> CompetenceList = [];
 
         private string GetCompetenceUrl(int id) => $"/competencies/{id}/edit";
 
@@ -21,7 +21,7 @@ namespace Mesta.Portal.Web.Pages.Competence
 
         protected override async Task OnInitializedAsync()
         {
-            CompetenceList = await FetchCompetenceListFeature.Execute();
+            CompetenceList = await FetchCompetenceListFeature.Execute(100);
         }
     }
 }

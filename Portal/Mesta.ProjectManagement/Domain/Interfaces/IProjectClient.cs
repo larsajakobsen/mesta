@@ -4,7 +4,7 @@ namespace Mesta.ProjectManagement.Domain.Interfaces
 {
     public interface IProjectClient
     {
-        Task<Project> GetProject(int id);
+        Task<Project> GetProject(Guid id);
         Task<List<Project>> GetProjects();
     }
 }

@@ -1,8 +1,10 @@
 ﻿@page "/competencies"
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @attribute [StreamRendering]
+@attribute [Authorize]
 
 @using Mesta.Portal.Web.Shared.Components.MestaTable
+@using Microsoft.AspNetCore.Authorization
 
 <PageTitle>Kompetanse</PageTitle>
 

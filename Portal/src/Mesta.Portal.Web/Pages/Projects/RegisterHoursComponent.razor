@@ -1,0 +1,115 @@
+﻿@using System.Globalization
+
+<h3>Registrer Timer</h3>
+
+<EditForm Model="hoursEntry" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="project">Prosjekt</label>
+        <select id="project" class="form-control" @bind="hoursEntry.ProjectId">
+            <option value="">Velg et prosjekt</option>
+            @foreach (var project in Projects)
+            {
+                <option value="@project.Id">@project.Description</option>
+            }
+        </select>
+        <ValidationMessage For="@(() => hoursEntry.ProjectId)" />
+    </div>
+
+    <div class="form-group">
+        <label for="date">Dato</label>
+        <input id="date" type="date" class="form-control" @bind-value="hoursEntry.Date" />
+        <ValidationMessage For="@(() => hoursEntry.Date)" />
+    </div>
+
+    <div class="form-group">
+        <label for="hours">Antall Timer</label>
+        <input id="hours" type="number" step="0.5" class="form-control" @bind-value="hoursEntry.Hours" />
+        <ValidationMessage For="@(() => hoursEntry.Hours)" />
+    </div>
+
+    <div class="form-group">
+        <label for="comment">Kommentar</label>
+        <textarea id="comment" class="form-control" @bind="hoursEntry.Comment"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registrer</button>
+</EditForm>
+
+@if (successMessage != null)
+{
+    <div class="alert alert-success mt-3">@successMessage</div>
+}
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger mt-3">@errorMessage</div>
+}
+
+@using System.ComponentModel.DataAnnotations
+@using Mesta.ProjectManagement.Domain
+@using Mesta.ProjectManagement.Features.Projects.Fetch
+
+@inject FetchProjectsFeature FetchProjectsFeature;
+
+@code {
+    private HoursEntryModel hoursEntry = new HoursEntryModel();
+    private List<Project> Projects = new List<Project>();
+    private string? successMessage;
+    private string? errorMessage;
+
+    [Parameter]
+    public Project Project { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await FetchProjectsFeature.Execute();
+        if (response != null)
+        {
+            Projects = response.Projects;
+        }
+        hoursEntry.ProjectId = Project.Id;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            // Replace with your service or API call
+            await SaveHoursEntry(hoursEntry);
+
+            successMessage = "Timer registrert!";
+            errorMessage = null;
+
+            // Reset the form
+            hoursEntry = new HoursEntryModel();
+        }
+        catch (Exception ex)
+        {
+            successMessage = null;
+            errorMessage = $"Noe gikk galt: {ex.Message}";
+        }
+    }
+
+    private async Task SaveHoursEntry(HoursEntryModel entry)
+    {
+        // Simulated save operation
+        await Task.Delay(500);
+    }
+
+    public class HoursEntryModel
+    {
+        public Guid? ProjectId { get; set; }
+
+        [Required(ErrorMessage = "Dato er påkrevd.")]
+        public DateTime Date { get; set; } = DateTime.Now;
+
+        [Required(ErrorMessage = "Antall timer er påkrevd.")]
+        [Range(0.5, 24, ErrorMessage = "Timer må være mellom 0.5 og 24.")]
+        public double Hours { get; set; }
+
+        public string? Comment { get; set; }
+    }
+}
