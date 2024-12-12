@@ -1,6 +1,6 @@
 ﻿using Mesta.CompetenceManagement.Configuration;
 using Mesta.CompetenceManagement.Domain;
-using Mesta.CompetenceManagement.Domain.Interfaces;
+using Mesta.CompetenceManagement.Integrations.Interfaces;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
 using System.Net.Http.Headers;

@@ -1,6 +1,6 @@
 ﻿using EFCore.BulkExtensions;
 using Mesta.CompetenceManagement.Domain;
-using Mesta.CompetenceManagement.Domain.Interfaces;
+using Mesta.CompetenceManagement.Integrations.Interfaces;
 using Mesta.CompetenceManagement.Persistence;
 
 namespace Mesta.CompetenceManagement.Features.Competencies.Sync

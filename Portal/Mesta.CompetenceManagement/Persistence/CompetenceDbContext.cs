@@ -17,5 +17,15 @@ namespace Mesta.CompetenceManagement.Persistence
                 optionsBuilder.UseSqlServer("Server=LARSJOBB\\SQLEXPRESS;Database=Mesta.Competence;Trusted_Connection=True;TrustServerCertificate=True");
             }
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Competence>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<Competence>()
+                .Property(e => e.Id)
+                .ValueGeneratedNever(); 
+        }
     }
 }

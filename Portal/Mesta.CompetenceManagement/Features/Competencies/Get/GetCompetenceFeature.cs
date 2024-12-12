@@ -1,5 +1,4 @@
-﻿using Mesta.CompetenceManagement.Domain.Interfaces;
-using Mesta.CompetenceManagement.Domain;
+﻿using Mesta.CompetenceManagement.Domain;
 using Mesta.CompetenceManagement.Persistence;
 using Microsoft.EntityFrameworkCore;
 

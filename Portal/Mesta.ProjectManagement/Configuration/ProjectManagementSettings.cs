@@ -1,4 +1,4 @@
-﻿namespace Mesta.CompetenceManagement.Configuration
+﻿namespace Mesta.ProjectManagement.Configuration
 {
     internal class ProjectManagementSettings
     {

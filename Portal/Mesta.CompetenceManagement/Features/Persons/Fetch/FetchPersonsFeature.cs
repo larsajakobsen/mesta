@@ -1,5 +1,5 @@
 ﻿using Mesta.CompetenceManagement.Domain;
-using Mesta.CompetenceManagement.Domain.Interfaces;
+using Mesta.CompetenceManagement.Integrations.Interfaces;
 
 namespace Mesta.CompetenceManagement.Features.Persons.Fetch
 {

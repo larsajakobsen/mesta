@@ -1,5 +1,4 @@
-﻿using Mesta.CompetenceManagement.Configuration;
-using Mesta.ProjectManagement.Domain.Interfaces;
+﻿using Mesta.ProjectManagement.Domain.Interfaces;
 using Mesta.ProjectManagement.Features.Projects.Fetch;
 using Mesta.ProjectManagement.Features.Projects.Get;
 using Mesta.ProjectManagement.Integrations.Mdc.Projects;

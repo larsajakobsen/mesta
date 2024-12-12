@@ -1,5 +1,5 @@
 ﻿using Mesta.CompetenceManagement.Domain;
-using Mesta.CompetenceManagement.Domain.Interfaces;
+using Mesta.CompetenceManagement.Integrations.Interfaces;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using System.Text;

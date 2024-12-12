@@ -1,9 +1,9 @@
-﻿using Mesta.CompetenceManagement.Domain.Interfaces;
-using Mesta.CompetenceManagement.Features.Competencies.Fetch;
+﻿using Mesta.CompetenceManagement.Features.Competencies.Fetch;
 using Mesta.CompetenceManagement.Features.Competencies.Get;
 using Mesta.CompetenceManagement.Features.Competencies.Save;
 using Mesta.CompetenceManagement.Features.Competencies.Sync;
 using Mesta.CompetenceManagement.Features.Persons.Fetch;
+using Mesta.CompetenceManagement.Integrations.Interfaces;
 using Mesta.CompetenceManagement.Integrations.Landax;
 using Mesta.CompetenceManagement.Integrations.Mdc.Persons;
 using Mesta.CompetenceManagement.Persistence;

@@ -1,40 +1,55 @@
 using FakeItEasy;
 using Mesta.CompetenceManagement.Domain;
-using Mesta.CompetenceManagement.Domain.Interfaces;
 using Mesta.CompetenceManagement.Features.Competencies.Fetch;
 using Mesta.CompetenceManagement.Features.Competencies.Save;
+using Mesta.CompetenceManagement.Features.Competencies.Sync;
+using Mesta.CompetenceManagement.Integrations.Interfaces;
 using Mesta.CompetenceManagement.Persistence;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mesta.Portal.Application.Tests
 {
     public class SyncCompetenceFeatureTests
     {
-        //[Fact]
-        //public async Task Execute_WithNoParams_ShouldFetchCompetenceAndSave()
-        //{
-        //    ICompetenceClient competenceClient = A.Fake<ICompetenceClient>();
-        //    IPersonClient personClient = A.Fake<IPersonClient>();
+        [Fact]
+        public async Task Execute_WithNoParams_ShouldFetchCompetenceAndSave()
+        {
+            ICompetenceClient competenceClient = A.Fake<ICompetenceClient>();
+            IPersonClient personClient = A.Fake<IPersonClient>();
 
-        //    A.CallTo(() => competenceClient.FetchCompetencies()).Returns(GetFakeCompetencies());
+            A.CallTo(() => competenceClient.FetchCompetencies(0)).Returns(GetFakeCompetencies());
 
-        //    var options = new DbContextOptionsBuilder<CompetenceDbContext>()
-        //        .UseInMemoryDatabase("CompetenceTestDb")
-        //        .Options;
+            using var dbContext = CreateContextForSQLite();
 
-        //    using var dbContext = new CompetenceDbContext(options);
+            IFetchCompetenceListFeature fetchCompetenceList = new FetchCompetenceListFeature(dbContext);
+            ISaveCompetenciesFeature saveCompetencies = new SaveCompetenciesFeature(dbContext);
 
-        //    IFetchCompetenceListFeature fetchCompetenceList = new FetchCompetenceListFeature(dbContext, personClient, competenceClient);
-        //    ISaveCompetenciesFeature saveCompetencies = new SaveCompetenciesFeature(dbContext);
+            SyncCompetenceFeature sut = new(dbContext, competenceClient);
 
-        //    SyncCompetenceFeature sut = new(fetchCompetenceList, saveCompetencies);
+            await sut.Execute();
 
-        //    await sut.Execute();
+            A.CallTo(() => competenceClient.FetchCompetencies(0)).MustHaveHappened();
 
-        //    A.CallTo(() => competenceClient.FetchCompetencies()).MustHaveHappened();
+            Assert.Equal(4, dbContext.Competencies.Count());
+        }
 
-        //    Assert.Equal(4, dbContext.Competencies.Count());
-        //}
+        private CompetenceDbContext CreateContextForSQLite()
+        {
+            SQLitePCL.Batteries.Init();
+
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+
+            var options = new DbContextOptionsBuilder<CompetenceDbContext>()
+                .UseSqlite(connection)
+                .Options;
+
+            var context = new CompetenceDbContext(options);
+            context.Database.EnsureCreated();
+
+            return context;
+        }
 
         private static List<Competence> GetFakeCompetencies()
         {
